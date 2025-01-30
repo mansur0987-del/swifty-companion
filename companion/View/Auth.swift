@@ -6,9 +6,6 @@
 //
 
 import SwiftUI
-#Preview {
-	auth_view()
-}
 
 struct auth_view: View {
 	@State var auth = false
