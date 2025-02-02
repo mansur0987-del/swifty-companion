@@ -60,10 +60,19 @@ struct profile_button: View {
 
 struct login_button: View {
 	@Binding var auth : Bool
+	let network = Network()
 	var body: some View {
 		Button {
 			print("login")
-			print(infoDictionary["URL_42"] ?? "value")
+			
+			Task {
+				do {
+					try await network.GetToken()
+				} catch {
+					print("Error", error)
+				}
+			}
+			
 			auth.toggle()
 		} label: {
 			Text("Login")

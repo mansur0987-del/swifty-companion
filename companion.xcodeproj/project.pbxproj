@@ -14,6 +14,7 @@
 		603DBC6F2D4631CF005EED6B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 603DBC6E2D4631CF005EED6B /* Assets.xcassets */; };
 		603DBC722D4631CF005EED6B /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 603DBC712D4631CF005EED6B /* Preview Assets.xcassets */; };
 		60489BFE2D4957240032E425 /* Config.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 60489BFA2D483D710032E425 /* Config.xcconfig */; };
+		60A6548D2D4D06700025A611 /* Interfaces.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60A6548C2D4D06700025A611 /* Interfaces.swift */; };
 		60FD6B212D4C038B0061C7F3 /* Search.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60FD6B202D4C038B0061C7F3 /* Search.swift */; };
 /* End PBXBuildFile section */
 
@@ -27,6 +28,7 @@
 		603DBC712D4631CF005EED6B /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		60489BFA2D483D710032E425 /* Config.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Config.xcconfig; sourceTree = "<group>"; };
 		60489BFC2D483E4C0032E425 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		60A6548C2D4D06700025A611 /* Interfaces.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Interfaces.swift; sourceTree = "<group>"; };
 		60FD6B1E2D4C023D0061C7F3 /* .gitignore */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
 		60FD6B202D4C038B0061C7F3 /* Search.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Search.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -80,6 +82,7 @@
 		603DBC692D4631C9005EED6B /* companion */ = {
 			isa = PBXGroup;
 			children = (
+				60A6548B2D4D063C0025A611 /* Interface */,
 				60357EF92D4BE8500061C854 /* View */,
 				60357EF62D4BE7480061C854 /* Utils */,
 				60489BFC2D483E4C0032E425 /* Info.plist */,
@@ -97,6 +100,14 @@
 				603DBC712D4631CF005EED6B /* Preview Assets.xcassets */,
 			);
 			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		60A6548B2D4D063C0025A611 /* Interface */ = {
+			isa = PBXGroup;
+			children = (
+				60A6548C2D4D06700025A611 /* Interfaces.swift */,
+			);
+			path = Interface;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -173,6 +184,7 @@
 				603DBC6D2D4631C9005EED6B /* ContentView.swift in Sources */,
 				60357EF82D4BE7860061C854 /* API.swift in Sources */,
 				60FD6B212D4C038B0061C7F3 /* Search.swift in Sources */,
+				60A6548D2D4D06700025A611 /* Interfaces.swift in Sources */,
 				603DBC6B2D4631C9005EED6B /* companionApp.swift in Sources */,
 				60357EFD2D4BEA550061C854 /* Auth.swift in Sources */,
 			);
