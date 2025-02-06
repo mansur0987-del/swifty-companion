@@ -19,6 +19,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		602B665B2D5095B000C42AAE /* companion.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = companion.entitlements; sourceTree = "<group>"; };
 		60357EF72D4BE7860061C854 /* API.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = API.swift; sourceTree = "<group>"; };
 		60357EFC2D4BEA550061C854 /* Auth.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Auth.swift; sourceTree = "<group>"; };
 		603DBC672D4631C9005EED6B /* companion.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = companion.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -82,6 +83,7 @@
 		603DBC692D4631C9005EED6B /* companion */ = {
 			isa = PBXGroup;
 			children = (
+				602B665B2D5095B000C42AAE /* companion.entitlements */,
 				60A6548B2D4D063C0025A611 /* Interface */,
 				60357EF92D4BE8500061C854 /* View */,
 				60357EF62D4BE7480061C854 /* Utils */,
@@ -318,6 +320,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = companion/companion.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"companion/Preview Content\"";
@@ -348,6 +351,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = companion/companion.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"companion/Preview Content\"";

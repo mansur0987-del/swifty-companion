@@ -7,6 +7,7 @@
 
 import Combine
 import Foundation
+import Security
 
 var env_dict : EnvDict {
 	get {
@@ -27,14 +28,6 @@ var env_dict : EnvDict {
 	}
 }
 
-struct Token: Decodable {
-	var access_token: String
-	var token_type: String
-	var expires_in: Double
-	var scope: String
-	var created_at: Double
-}
-
 enum NetworkError: Error {
 	case unauthorised
 	case timeout
@@ -43,28 +36,40 @@ enum NetworkError: Error {
 	case invalidUrl
 }
 
-
 class Network {
 	var env_data : EnvDict = env_dict
+	var token = Token()
 	
-	func GetToken() async throws {
+	func GetToken() async throws -> Token {
+		print("GetToken")
 		guard let url = URL(string: env_data.url_42 + "/oauth/token")
-			else { throw NetworkError.invalidUrl }
+		else { throw NetworkError.invalidUrl }
 		var urlRequest = URLRequest(url: url)
 		urlRequest.httpMethod = "POST"
 		
 		let token_body = "grant_type=client_credentials&client_id=\(env_data.uid_43)&client_secret=\(env_data.secret_42)"
 		urlRequest.httpBody = token_body.data(using: String.Encoding.utf8)
-		print("urlRequest:", urlRequest)
-				
+		
 		let (data, response) = try await URLSession.shared.data(for: urlRequest)
-			print ("Data:", data)
 		guard (response as? HTTPURLResponse)?.statusCode == 200
 		else { throw NetworkError.invalidResponse(code_error: (response as? HTTPURLResponse)?.statusCode ?? 500)}
-		
-		print ("Response:", response)
-		let Token = try JSONDecoder().decode(Token.self, from: data)
-		print("Async decodedFood", Token)
+		if let token = try? JSONDecoder().decode(Token.self, from: data){
+			UserDefaults.standard.set(data, forKey: "Token_data")
+			UserDefaults.standard.set(Date().timeIntervalSince1970, forKey: "Token_date")
+			return token
+		}
+		throw NetworkError.serverError
+	}
+	
+	
+	func CheckToken() async throws {
+		print("CheckToken")
+		if let token_data = UserDefaults.standard.object(forKey: "Token_data") as? Data,
+		   let token = try? JSONDecoder().decode(Token.self, from: token_data),
+		   Date().timeIntervalSince1970 - UserDefaults.standard.double(forKey: "Token_date") + token.expires_in > 10 {
+			self.token = token
+		}
+		else { self.token = try await GetToken() }
+		print("self.token", self.token)
 	}
 }
-

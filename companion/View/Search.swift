@@ -9,10 +9,11 @@ import SwiftUI
 
 struct search_user: View {
 	@Binding var userName : String
+	@Binding var token : Token
 	var body: some View {
 		VStack{
 			Image("42_logo")
-				.padding([.top], 20)
+				.padding([.top], 10)
 				.frame(maxHeight: 200, alignment: .top)
 			TextField ("User name", text: $userName)
 				.font(.system(size: 20, weight: .semibold, design: .rounded))
@@ -21,7 +22,7 @@ struct search_user: View {
 				.frame(width: 300, alignment: .center)
 				.cornerRadius(40)
 			Button  {
-				print (userName)
+				print (userName == "" ? token.access_token : userName)
 			} label: {
 				HStack {
 					Image(systemName: "magnifyingglass")

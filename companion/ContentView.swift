@@ -9,13 +9,21 @@ import SwiftUI
 
 struct ContentView: View {
 	@State var searchName = ""
+	@State var network = Network()
 	var body: some View {
 		VStack() {
-			search_user(userName : $searchName)
-			auth_view()
+			search_user(userName : $searchName, token: $network.token )
+//			auth_view()
 		}
 		.ignoresSafeArea(edges: [.bottom])
 		.background(background_image())
+		.task {
+			do {
+				try await network.CheckToken()
+			} catch {
+				print("Error", error)
+			}
+		}
 	}
 }
 
