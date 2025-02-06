@@ -66,7 +66,7 @@ class Network {
 		print("CheckToken")
 		if let token_data = UserDefaults.standard.object(forKey: "Token_data") as? Data,
 		   let token = try? JSONDecoder().decode(Token.self, from: token_data),
-		   Date().timeIntervalSince1970 - UserDefaults.standard.double(forKey: "Token_date") + token.expires_in > 10 {
+		   Date().timeIntervalSince1970 - UserDefaults.standard.double(forKey: "Token_date") > token.expires_in - 10 {
 			self.token = token
 		}
 		else { self.token = try await GetToken() }
