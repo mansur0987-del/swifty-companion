@@ -9,7 +9,7 @@ import SwiftUI
 
 struct search_user: View {
 	@Binding var userName : String
-	@Binding var token : Token
+	@Binding var network : Network
 	var body: some View {
 		VStack{
 			Image("42_logo")
@@ -22,8 +22,20 @@ struct search_user: View {
 				.frame(width: 300, alignment: .center)
 				.cornerRadius(40)
 			Button  {
-				print (userName == "" ? token.access_token : userName)
-			} label: {
+				print (userName == "" ? network.token.access_token : userName)
+				Task {
+					if userName != "" {
+						do {
+							let user = try await network.GetUserData(user_login: userName)
+							print("user Vue", user)
+						}
+						catch {
+							print("Error", error)
+						}
+				}
+				
+				}
+							} label: {
 				HStack {
 					Image(systemName: "magnifyingglass")
 						.padding(1)

@@ -42,3 +42,24 @@ struct Token: Decodable {
 		self.created_at = created_at
 	}
 }
+
+struct User: Decodable {
+	var id: Int
+	var email: String
+	var login: String
+	var first_name: String
+	var last_name: String
+	var usual_full_name: String?
+	var usual_first_name: String?
+	var displayname: String?
+	var image: ImageAPI?
+}
+
+struct ImageAPI: Decodable {
+	var link: String?
+	var versions_image: ImageVersion?
+}
+
+struct ImageVersion: Decodable {
+	var small : String?
+}

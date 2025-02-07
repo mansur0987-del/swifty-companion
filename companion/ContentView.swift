@@ -12,7 +12,7 @@ struct ContentView: View {
 	@State var network = Network()
 	var body: some View {
 		VStack() {
-			search_user(userName : $searchName, token: $network.token )
+			search_user(userName : $searchName, network: $network )
 //			auth_view()
 		}
 		.ignoresSafeArea(edges: [.bottom])

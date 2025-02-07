@@ -61,15 +61,35 @@ class Network {
 		throw NetworkError.serverError
 	}
 	
-	
 	func CheckToken() async throws {
 		print("CheckToken")
 		if let token_data = UserDefaults.standard.object(forKey: "Token_data") as? Data,
 		   let token = try? JSONDecoder().decode(Token.self, from: token_data),
-		   Date().timeIntervalSince1970 - UserDefaults.standard.double(forKey: "Token_date") > token.expires_in - 10 {
+		   Date().timeIntervalSince1970 - UserDefaults.standard.double(forKey: "Token_date") < token.expires_in - 10 {
 			self.token = token
 		}
 		else { self.token = try await GetToken() }
 		print("self.token", self.token)
+	}
+	
+	func GetUserData(user_login : String) async throws -> User {
+		print("GetUserData")
+		try await CheckToken()
+		guard let url = URL(string: env_data.url_42 + "/v2/users/" + user_login.lowercased())
+		else { throw NetworkError.invalidUrl }
+		var urlRequest = URLRequest(url: url)
+		urlRequest.httpMethod = "GET"
+		urlRequest.setValue("Bearer " + token.access_token, forHTTPHeaderField: "Authorization")
+		
+		let (data, response) = try await URLSession.shared.data(for: urlRequest)
+		guard (response as? HTTPURLResponse)?.statusCode == 200
+		else { throw NetworkError.invalidResponse(code_error: (response as? HTTPURLResponse)?.statusCode ?? 500)}
+		print("data", try JSONDecoder().decode(User.self, from: data))
+		print("response", response)
+		if let users = try? JSONDecoder().decode(User.self, from: data) {
+			print("users: ", users)
+			return users
+		}
+		throw NetworkError.serverError
 	}
 }
