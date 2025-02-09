@@ -32,15 +32,22 @@ struct search_user: View {
 					if userName != "" {
 						do {
 							self.user = try await network.GetUserData(user_login: userName)
+							if (self.user == nil) {
+								text_error = "Couldn't Find Account"
+							}
+							
 						}
 						catch NetworkError.invalidResponse(code_error: 404) {
 							text_error = "Couldn't Find Account"
-							print("Error ", "Couldn't Find Account")
-						}
+													}
 						catch {
 							text_error = "Server error"
 							print("Error ", error)
 						}
+						userName = ""
+					}
+					else {
+						text_error = "Couldn't Find Account"
 					}
 				}
 			} label: {
@@ -67,6 +74,7 @@ struct search_user: View {
 					Text(self.user!.login)
 				}
 			}
+			.ignoresSafeArea(.all)
 		.frame(maxWidth: /*@START_MENU_TOKEN@*/.infinity/*@END_MENU_TOKEN@*/, minHeight: 0, maxHeight: .infinity)
 		
 		
