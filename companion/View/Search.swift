@@ -9,7 +9,7 @@ import SwiftUI
 
 struct search_user: View {
 	@Binding var network : Network
-	@State var text_error: String = ""
+	@State var text_error: String = "Write login"
 	@State var showDetailView = false
 	@State var userName : String = ""
 	@State var user : User?
@@ -27,28 +27,29 @@ struct search_user: View {
 				.cornerRadius(40)
 			Button  {
 				Task {
+					self.user = nil
 					text_error = ""
-					showDetailView = true
-					if userName != "" {
+					
+					if userName == "" {
+						text_error = "Write login"
+					}
+					else {
 						do {
 							self.user = try await network.GetUserData(user_login: userName)
 							if (self.user == nil) {
 								text_error = "Couldn't Find Account"
 							}
-							
 						}
 						catch NetworkError.invalidResponse(code_error: 404) {
 							text_error = "Couldn't Find Account"
-													}
+						}
 						catch {
 							text_error = "Server error"
-							print("Error ", error)
 						}
 						userName = ""
 					}
-					else {
-						text_error = "Couldn't Find Account"
-					}
+					showDetailView = text_error != "" ? true : self.user != nil ? true : false
+					print("text_error", text_error)
 				}
 			} label: {
 				HStack {
@@ -66,15 +67,21 @@ struct search_user: View {
 			}
 		}
 			.sheet(isPresented: $showDetailView) {
-				if text_error != "" {
-					Text(text_error)
-						.padding()
+				VStack {
+					if self.user?.login != nil{
+						Text(self.user!.login)
+							.foregroundColor(.white)
+					}
+					else {
+						Text(text_error)
+							.padding()
+							.foregroundColor(.white)
+					}
 				}
-				else if self.user?.login != nil{
-					Text(self.user!.login)
-				}
+				.frame(maxWidth: /*@START_MENU_TOKEN@*/.infinity/*@END_MENU_TOKEN@*/, minHeight: 0, maxHeight: .infinity)
+				.ignoresSafeArea(.all)
+				.background(background_image())
 			}
-			.ignoresSafeArea(.all)
 		.frame(maxWidth: /*@START_MENU_TOKEN@*/.infinity/*@END_MENU_TOKEN@*/, minHeight: 0, maxHeight: .infinity)
 		
 		
