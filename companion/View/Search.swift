@@ -36,15 +36,12 @@ struct search_user: View {
 					else {
 						do {
 							self.user = try await network.GetUserData(user_login: userName)
-							if (self.user == nil) {
-								text_error = "Couldn't Find Account"
-							}
 						}
 						catch NetworkError.invalidResponse(code_error: 404) {
 							text_error = "Couldn't Find Account"
 						}
 						catch {
-							text_error = "Server error"
+							text_error = "Server error. Check internet connection."
 						}
 						userName = ""
 					}
@@ -66,22 +63,50 @@ struct search_user: View {
 				.padding()
 			}
 		}
-			.sheet(isPresented: $showDetailView) {
-				VStack {
-					if self.user?.login != nil{
-						Text(self.user!.login)
-							.foregroundColor(.white)
+		.sheet(isPresented: $showDetailView) {
+			VStack {
+				if self.user?.login != nil{
+					HStack {
+						if (self.user?.image?.link != nil) {
+							AsyncImage(url: URL(string: (self.user?.image?.link)!), scale: 4)
+								.frame(maxWidth: 150, maxHeight: 150)
+								.cornerRadius(100)
+								.padding()
+						}
+						else {
+							Image("default")
+								.resizable()
+								.frame(maxWidth: 150, maxHeight: 150)
+								.cornerRadius(100)
+								.padding()
+						}
+						VStack (alignment: .leading, spacing: 2) {
+							Text("Login: " + self.user!.login)
+							Text("Email:" + self.user!.email)
+								.overlay(Rectangle().frame(width: nil, height: 1, alignment: .top).foregroundColor(Color.gray), alignment: .top)
+							Text("Name: " + self.user!.first_name + ", " + self.user!.last_name)
+								.overlay(Rectangle().frame(width: nil, height: 1, alignment: .top).foregroundColor(Color.gray), alignment: .top)
+							Text("Wallet: " + String(self.user!.wallet) + " ₳")
+								.overlay(Rectangle().frame(width: nil, height: 1, alignment: .top).foregroundColor(Color.gray), alignment: .top)
+						}
+						.foregroundColor(.white)
+						.font(.system(size: 17, weight: .semibold, design: .rounded))
+						.padding()
+						
 					}
-					else {
-						Text(text_error)
-							.padding()
-							.foregroundColor(.white)
-					}
+					Spacer()
+					
+									}
+				else {
+					Text(text_error)
+						.padding()
+						.foregroundColor(.white)
 				}
-				.frame(maxWidth: /*@START_MENU_TOKEN@*/.infinity/*@END_MENU_TOKEN@*/, minHeight: 0, maxHeight: .infinity)
-				.ignoresSafeArea(.all)
-				.background(background_image())
 			}
+			.frame(maxWidth: /*@START_MENU_TOKEN@*/.infinity/*@END_MENU_TOKEN@*/, minHeight: 0, maxHeight: .infinity)
+			.ignoresSafeArea(.all)
+			.background(background_image())
+		}
 		.frame(maxWidth: /*@START_MENU_TOKEN@*/.infinity/*@END_MENU_TOKEN@*/, minHeight: 0, maxHeight: .infinity)
 		
 		

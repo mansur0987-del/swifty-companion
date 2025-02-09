@@ -14,7 +14,6 @@ struct ContentView: View {
 		VStack() {
 			if text_error == "" {
 				search_user(network: $network )
-	//			auth_view()
 			}
 			else {
 				Text(text_error)
@@ -26,7 +25,7 @@ struct ContentView: View {
 			do {
 				try await network.CheckToken()
 			} catch {
-				text_error = "System Error"
+				text_error = "System Error. Check internet connection."
 				print("Error", error)
 			}
 		}
