@@ -8,12 +8,17 @@
 import SwiftUI
 
 struct ContentView: View {
-	@State var searchName = ""
 	@State var network = Network()
+	@State var text_error: String = ""
 	var body: some View {
 		VStack() {
-			search_user(userName : $searchName, network: $network )
-//			auth_view()
+			if text_error == "" {
+				search_user(network: $network )
+	//			auth_view()
+			}
+			else {
+				Text(text_error)
+			}
 		}
 		.ignoresSafeArea(edges: [.bottom])
 		.background(background_image())
@@ -21,6 +26,7 @@ struct ContentView: View {
 			do {
 				try await network.CheckToken()
 			} catch {
+				text_error = "System Error"
 				print("Error", error)
 			}
 		}

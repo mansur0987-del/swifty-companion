@@ -8,8 +8,12 @@
 import SwiftUI
 
 struct search_user: View {
-	@Binding var userName : String
 	@Binding var network : Network
+	@State var text_error: String = ""
+	@State var showDetailView = false
+	@State var userName : String = ""
+	@State var user : User?
+	
 	var body: some View {
 		VStack{
 			Image("42_logo")
@@ -22,20 +26,24 @@ struct search_user: View {
 				.frame(width: 300, alignment: .center)
 				.cornerRadius(40)
 			Button  {
-				print (userName == "" ? network.token.access_token : userName)
 				Task {
+					text_error = ""
+					showDetailView = true
 					if userName != "" {
 						do {
-							let user = try await network.GetUserData(user_login: userName)
-							print("user Vue", user)
+							self.user = try await network.GetUserData(user_login: userName)
+						}
+						catch NetworkError.invalidResponse(code_error: 404) {
+							text_error = "Couldn't Find Account"
+							print("Error ", "Couldn't Find Account")
 						}
 						catch {
-							print("Error", error)
+							text_error = "Server error"
+							print("Error ", error)
 						}
+					}
 				}
-				
-				}
-							} label: {
+			} label: {
 				HStack {
 					Image(systemName: "magnifyingglass")
 						.padding(1)
@@ -50,6 +58,18 @@ struct search_user: View {
 				.padding()
 			}
 		}
+			.sheet(isPresented: $showDetailView) {
+				if text_error != "" {
+					Text(text_error)
+						.padding()
+				}
+				else if self.user?.login != nil{
+					Text(self.user!.login)
+				}
+			}
 		.frame(maxWidth: /*@START_MENU_TOKEN@*/.infinity/*@END_MENU_TOKEN@*/, minHeight: 0, maxHeight: .infinity)
+		
+		
+		
 	}
 }

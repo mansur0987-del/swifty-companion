@@ -43,16 +43,25 @@ struct Token: Decodable {
 	}
 }
 
+struct UsersList: Decodable {
+	var login: String
+}
+
 struct User: Decodable {
 	var id: Int
 	var email: String
 	var login: String
 	var first_name: String
 	var last_name: String
+	var phone: String
 	var usual_full_name: String?
 	var usual_first_name: String?
 	var displayname: String?
+	var location: String?
+	var wallet: Int
 	var image: ImageAPI?
+	var cursus_users: [CursusUsers]
+	var projects_users: [UserProject]
 }
 
 struct ImageAPI: Decodable {
@@ -62,4 +71,36 @@ struct ImageAPI: Decodable {
 
 struct ImageVersion: Decodable {
 	var small : String?
+}
+
+struct CursusUsers: Decodable {
+	var id: Int
+	var cursus_id: Int
+	var level: Double
+	var has_coalition: Bool
+	var skills: [Skill]
+	var cursus: Cursus
+}
+
+struct Cursus: Decodable {
+	var id: Int
+	var name: String
+}
+
+struct Skill: Decodable {
+	var id: Int
+	var name: String
+	var level: Double
+}
+
+struct UserProject: Decodable {
+	var id: Int
+	var status: String
+	var final_mark: Int?
+	var project: ProjectData
+}
+
+struct ProjectData: Decodable {
+	var id: Int
+	var name: String
 }

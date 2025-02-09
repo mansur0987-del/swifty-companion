@@ -12,7 +12,7 @@ import Security
 var env_dict : EnvDict {
 	get {
 		guard let infoDictionary = Bundle.main.infoDictionary as? NSDictionary else {
-				fatalError("NOT FOUND CONFIG")
+			fatalError("NOT FOUND CONFIG")
 		}
 		guard let tmp_uid = infoDictionary["UID_42"] as? String, infoDictionary["UID_42"] as! String != ""  else {
 			fatalError("NOT FOUND UID_42")
@@ -62,18 +62,17 @@ class Network {
 	}
 	
 	func CheckToken() async throws {
-		print("CheckToken")
+		print("func CheckToken")
 		if let token_data = UserDefaults.standard.object(forKey: "Token_data") as? Data,
 		   let token = try? JSONDecoder().decode(Token.self, from: token_data),
 		   Date().timeIntervalSince1970 - UserDefaults.standard.double(forKey: "Token_date") < token.expires_in - 10 {
 			self.token = token
 		}
 		else { self.token = try await GetToken() }
-		print("self.token", self.token)
 	}
-	
+		
 	func GetUserData(user_login : String) async throws -> User {
-		print("GetUserData")
+		print("func GetUserData")
 		try await CheckToken()
 		guard let url = URL(string: env_data.url_42 + "/v2/users/" + user_login.lowercased())
 		else { throw NetworkError.invalidUrl }
@@ -84,12 +83,11 @@ class Network {
 		let (data, response) = try await URLSession.shared.data(for: urlRequest)
 		guard (response as? HTTPURLResponse)?.statusCode == 200
 		else { throw NetworkError.invalidResponse(code_error: (response as? HTTPURLResponse)?.statusCode ?? 500)}
-		print("data", try JSONDecoder().decode(User.self, from: data))
-		print("response", response)
+		print("request user data: ", try JSONDecoder().decode(User.self, from: data))
 		if let users = try? JSONDecoder().decode(User.self, from: data) {
-			print("users: ", users)
 			return users
 		}
 		throw NetworkError.serverError
 	}
+
 }
