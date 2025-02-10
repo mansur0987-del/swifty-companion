@@ -63,44 +63,25 @@ struct search_user: View {
 				.padding()
 			}
 		}
+		
+		
 		.sheet(isPresented: $showDetailView) {
 			VStack {
 				if self.user?.login != nil{
 					HStack {
-						if (self.user?.image?.link != nil) {
-							AsyncImage(url: URL(string: (self.user?.image?.link)!), scale: 4)
-								.frame(maxWidth: 150, maxHeight: 150)
-								.cornerRadius(100)
-								.padding()
-						}
-						else {
-							Image("default")
-								.resizable()
-								.frame(maxWidth: 150, maxHeight: 150)
-								.cornerRadius(100)
-								.padding()
-						}
-						VStack (alignment: .leading, spacing: 2) {
-							Text("Login: " + self.user!.login)
-							Text("Email:" + self.user!.email)
-								.overlay(Rectangle().frame(width: nil, height: 1, alignment: .top).foregroundColor(Color.gray), alignment: .top)
-							Text("Name: " + self.user!.first_name + ", " + self.user!.last_name)
-								.overlay(Rectangle().frame(width: nil, height: 1, alignment: .top).foregroundColor(Color.gray), alignment: .top)
-							Text("Wallet: " + String(self.user!.wallet) + " ₳")
-								.overlay(Rectangle().frame(width: nil, height: 1, alignment: .top).foregroundColor(Color.gray), alignment: .top)
-						}
-						.foregroundColor(.white)
-						.font(.system(size: 17, weight: .semibold, design: .rounded))
-						.padding()
-						
+						avatar(link: self.user?.image?.link)
+						main_data(	login: self.user!.login,
+									email: self.user!.email,
+									first_name: self.user!.first_name,
+									last_name: self.user!.last_name,
+									wallet: self.user!.wallet)
 					}
 					Spacer()
 					
-									}
+				}
 				else {
-					Text(text_error)
-						.padding()
-						.foregroundColor(.white)
+					error_view(text_error: text_error)
+
 				}
 			}
 			.frame(maxWidth: /*@START_MENU_TOKEN@*/.infinity/*@END_MENU_TOKEN@*/, minHeight: 0, maxHeight: .infinity)
@@ -108,8 +89,55 @@ struct search_user: View {
 			.background(background_image())
 		}
 		.frame(maxWidth: /*@START_MENU_TOKEN@*/.infinity/*@END_MENU_TOKEN@*/, minHeight: 0, maxHeight: .infinity)
-		
-		
-		
+	}
+}
+
+struct error_view : View {
+	@State var text_error : String
+	var body: some View {
+		Text(self.text_error)
+			.padding()
+			.foregroundColor(.white)
+	}
+}
+
+struct avatar : View {
+	@State var link : String?
+	var body: some View {
+		if (self.link != nil) {
+			AsyncImage(url: URL(string: (link)!), scale: 4)
+				.frame(maxWidth: 150, maxHeight: 150)
+				.cornerRadius(100)
+				.padding()
+		}
+		else {
+			Image("default")
+				.resizable()
+				.frame(maxWidth: 150, maxHeight: 150)
+				.cornerRadius(100)
+				.padding()
+		}
+	}
+}
+
+struct main_data : View {
+	@State var login : String
+	@State var email : String
+	@State var first_name: String
+	@State var last_name: String
+	@State var wallet: Int
+	var body: some View {
+		VStack (alignment: .leading, spacing: 2) {
+			Text("Login: " + login)
+			Text("Email:" + email)
+				.overlay(Rectangle().frame(width: nil, height: 1, alignment: .top).foregroundColor(Color.gray), alignment: .top)
+			Text("Name: " + first_name + ", " + last_name)
+				.overlay(Rectangle().frame(width: nil, height: 1, alignment: .top).foregroundColor(Color.gray), alignment: .top)
+			Text("Wallet: " + String(wallet) + " ₳")
+				.overlay(Rectangle().frame(width: nil, height: 1, alignment: .top).foregroundColor(Color.gray), alignment: .top)
+		}
+		.foregroundColor(.white)
+		.font(.system(size: 17, weight: .semibold, design: .rounded))
+		.padding()
 	}
 }
