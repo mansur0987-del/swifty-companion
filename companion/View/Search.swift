@@ -13,6 +13,14 @@ struct search_user: View {
 	@State var showDetailView = false
 	@State var userName : String = ""
 	@State var user : User?
+	@State private var selectedStructId: Int = 0
+	@State var cursus : [Cursus] = []
+	@State var selectedSkillsProjectId : Int = 0
+	@State var typeViewData: [TypeViewData] = [
+		TypeViewData(id: 0, name: "Skills"),
+		TypeViewData(id: 1, name: "Projects")
+	]
+	
 	
 	var body: some View {
 		VStack{
@@ -22,7 +30,7 @@ struct search_user: View {
 			TextField ("User name", text: $userName)
 				.font(.system(size: 20, weight: .semibold, design: .rounded))
 				.padding()
-				.background(.white)
+				.background(.tertiary)
 				.frame(width: 300, alignment: .center)
 				.cornerRadius(40)
 			Button  {
@@ -35,7 +43,12 @@ struct search_user: View {
 					}
 					else {
 						do {
+							self.cursus = []
 							self.user = try await network.GetUserData(user_login: userName)
+							self.user?.cursus_users.forEach { Element in
+								self.cursus.append(Cursus(id: Element.cursus.id, name: Element.cursus.name))
+							}
+							self.selectedStructId = self.cursus.first?.id ?? 0
 						}
 						catch NetworkError.invalidResponse(code_error: 404) {
 							text_error = "Couldn't Find Account"
@@ -76,7 +89,30 @@ struct search_user: View {
 									last_name: self.user!.last_name,
 									wallet: self.user!.wallet)
 					}
-					Spacer()
+					select_cursus(selectedStructId: $selectedStructId, cursus: cursus)
+					
+					@State var cursus_users: CursusUsers = self.user!.cursus_users.first(where: { Element in
+						Element.cursus.id == selectedStructId
+					})!
+					
+					@State var user_project: [UserProject] = self.user!.projects_users.filter({ Element in
+						Element.cursus_ids.contains(selectedStructId)
+					})
+					
+					level_data(cursus_users: $cursus_users)
+					
+					select_skills_projects(selectedSkillsProjectId: $selectedSkillsProjectId, typeViewData: typeViewData)
+					
+					if typeViewData.first(where: { Element in
+						Element.id == selectedSkillsProjectId
+					})!.name == "Skills" {
+						skills_data(cursus_users: $cursus_users)
+					}
+					else if typeViewData.first(where: { Element in
+						Element.id == selectedSkillsProjectId
+					})!.name == "Projects" {
+						projects_data(user_project: $user_project)
+					}
 					
 				}
 				else {
@@ -87,9 +123,14 @@ struct search_user: View {
 			.frame(maxWidth: /*@START_MENU_TOKEN@*/.infinity/*@END_MENU_TOKEN@*/, minHeight: 0, maxHeight: .infinity)
 			.ignoresSafeArea(.all)
 			.background(background_image())
+			.preferredColorScheme(/*@START_MENU_TOKEN@*/.dark/*@END_MENU_TOKEN@*/)
+			
 		}
 		.frame(maxWidth: /*@START_MENU_TOKEN@*/.infinity/*@END_MENU_TOKEN@*/, minHeight: 0, maxHeight: .infinity)
+		.preferredColorScheme(/*@START_MENU_TOKEN@*/.dark/*@END_MENU_TOKEN@*/)
+		
 	}
+	
 }
 
 struct error_view : View {
@@ -98,46 +139,5 @@ struct error_view : View {
 		Text(self.text_error)
 			.padding()
 			.foregroundColor(.white)
-	}
-}
-
-struct avatar : View {
-	@State var link : String?
-	var body: some View {
-		if (self.link != nil) {
-			AsyncImage(url: URL(string: (link)!), scale: 4)
-				.frame(maxWidth: 150, maxHeight: 150)
-				.cornerRadius(100)
-				.padding()
-		}
-		else {
-			Image("default")
-				.resizable()
-				.frame(maxWidth: 150, maxHeight: 150)
-				.cornerRadius(100)
-				.padding()
-		}
-	}
-}
-
-struct main_data : View {
-	@State var login : String
-	@State var email : String
-	@State var first_name: String
-	@State var last_name: String
-	@State var wallet: Int
-	var body: some View {
-		VStack (alignment: .leading, spacing: 2) {
-			Text("Login: " + login)
-			Text("Email:" + email)
-				.overlay(Rectangle().frame(width: nil, height: 1, alignment: .top).foregroundColor(Color.gray), alignment: .top)
-			Text("Name: " + first_name + ", " + last_name)
-				.overlay(Rectangle().frame(width: nil, height: 1, alignment: .top).foregroundColor(Color.gray), alignment: .top)
-			Text("Wallet: " + String(wallet) + " ₳")
-				.overlay(Rectangle().frame(width: nil, height: 1, alignment: .top).foregroundColor(Color.gray), alignment: .top)
-		}
-		.foregroundColor(.white)
-		.font(.system(size: 17, weight: .semibold, design: .rounded))
-		.padding()
 	}
 }

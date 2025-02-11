@@ -43,10 +43,6 @@ struct Token: Decodable {
 	}
 }
 
-struct UsersList: Decodable {
-	var login: String
-}
-
 struct User: Decodable {
 	var id: Int
 	var email: String
@@ -85,6 +81,11 @@ struct CursusUsers: Decodable {
 struct Cursus: Decodable {
 	var id: Int
 	var name: String
+	
+	init(id: Int, name: String) {
+		self.id = id
+		self.name = name
+	}
 }
 
 struct Skill: Decodable {
@@ -97,10 +98,22 @@ struct UserProject: Decodable {
 	var id: Int
 	var status: String
 	var final_mark: Int?
+	var cursus_ids: [Int]
 	var project: ProjectData
 }
 
 struct ProjectData: Decodable {
 	var id: Int
 	var name: String
+}
+
+
+struct TypeViewData: Codable {
+	var id: Int
+	var name: String
+	
+	init(id: Int, name: String) {
+		self.id = id
+		self.name = name
+	}
 }
