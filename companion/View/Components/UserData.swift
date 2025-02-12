@@ -44,7 +44,7 @@ struct main_data : View {
 		}
 		.frame(width: 170)
 		.foregroundColor(.white)
-		.font(.system(size: 20, weight: .semibold, design: .rounded))
+		.font(.system(size: 19, weight: .semibold, design: .rounded))
 		.padding()
 	}
 }
@@ -106,6 +106,11 @@ struct skills_data : View {
 				Text(String(format: "%.2f", floor(skill.level * 100) / 100) + " lvl")
 					.padding(2)
 					.frame(alignment: .trailing)
+				
+				Text(String(format: "%.2f", skill.level / 20 * 100) + " %")
+				
+				
+				
 			}
 		}
 		.font(.system(size: 18, design: .rounded))
@@ -130,8 +135,21 @@ struct projects_data : View {
 					Text(String(project.final_mark!))
 						.frame(alignment: .trailing)
 						.padding(10)
-						
 				}
+				
+				if (project.validated == nil) {
+					Image(systemName: "play.circle")
+						.foregroundStyle(Color.yellow)
+				}
+				else if (project.validated!) {
+					Image(systemName: "v.circle")
+						.foregroundStyle(Color.green)
+				}
+				else {
+					Image(systemName: "x.circle")
+						.foregroundStyle(Color.red)
+				}
+				
 				Text(project.status)
 					.frame(alignment: .trailing)
 					.padding(2)

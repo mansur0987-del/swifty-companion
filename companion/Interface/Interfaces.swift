@@ -98,8 +98,18 @@ struct UserProject: Decodable {
 	var id: Int
 	var status: String
 	var final_mark: Int?
+	var validated: Bool?
 	var cursus_ids: [Int]
 	var project: ProjectData
+	
+	enum CodingKeys: String, CodingKey {
+		case id
+		case status
+		case final_mark
+		case validated = "validated?"
+		case cursus_ids
+		case project
+	}
 }
 
 struct ProjectData: Decodable {
