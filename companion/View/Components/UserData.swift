@@ -70,7 +70,7 @@ struct level_data : View {
 		Text("Level: " + String(self.cursus_users.level))
 			.foregroundColor(.white)
 			.padding(.top)
-			.frame(width: .infinity)
+			.frame(width: 100)
 			.overlay(Rectangle()
 				.frame(width: nil, height: 1, alignment: .top)
 				.foregroundColor(Color.gray), alignment: .top)
@@ -111,11 +111,8 @@ struct skills_data : View {
 		.font(.system(size: 18, design: .rounded))
 		.padding(1)
 		.frame(width: 400)
-		.cornerRadius(80)
 		.preferredColorScheme(/*@START_MENU_TOKEN@*/.dark/*@END_MENU_TOKEN@*/)
 		.scrollContentBackground(.hidden)
-		.padding(15)
-		
 	}
 }
 
@@ -143,9 +140,7 @@ struct projects_data : View {
 		.font(.system(size: 18, design: .rounded))
 		.padding(1)
 		.frame(width: 400)
-		.cornerRadius(80)
 		.preferredColorScheme(/*@START_MENU_TOKEN@*/.dark/*@END_MENU_TOKEN@*/)
 		.scrollContentBackground(.hidden)
-		.padding(15)
 	}
 }

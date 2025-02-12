@@ -41,7 +41,7 @@ class Network {
 	var token = Token()
 	
 	func GetToken() async throws -> Token {
-		print("GetToken")
+		print("func GetToken")
 		guard let url = URL(string: env_data.url_42 + "/oauth/token")
 		else { throw NetworkError.invalidUrl }
 		var urlRequest = URLRequest(url: url)
@@ -83,7 +83,6 @@ class Network {
 		let (data, response) = try await URLSession.shared.data(for: urlRequest)
 		guard (response as? HTTPURLResponse)?.statusCode == 200
 		else { throw NetworkError.invalidResponse(code_error: (response as? HTTPURLResponse)?.statusCode ?? 500)}
-		print("request user data: ", try JSONDecoder().decode(User.self, from: data))
 		if let users = try? JSONDecoder().decode(User.self, from: data) {
 			return users
 		}

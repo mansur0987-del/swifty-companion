@@ -13,7 +13,7 @@ struct ContentView: View {
 	var body: some View {
 		VStack() {
 			if text_error == "" {
-				search_user(network: $network)
+				search_user(network: network)
 			}
 			else {
 				Text(text_error)
@@ -27,7 +27,6 @@ struct ContentView: View {
 				try await network.CheckToken()
 			} catch {
 				text_error = "System Error. Check internet connection."
-				print("Error", error)
 			}
 		}
 	}

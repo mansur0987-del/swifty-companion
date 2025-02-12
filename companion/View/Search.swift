@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct search_user: View {
-	@Binding var network : Network
+	@State var network : Network
 	@State var text_error: String = "Write login"
 	@State var showDetailView = false
 	@State var userName : String = ""
@@ -59,7 +59,6 @@ struct search_user: View {
 						userName = ""
 					}
 					showDetailView = text_error != "" ? true : self.user != nil ? true : false
-					print("text_error", text_error)
 				}
 			} label: {
 				HStack {
