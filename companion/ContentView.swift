@@ -14,6 +14,7 @@ struct ContentView: View {
 		VStack() {
 			if text_error == "" {
 				search_user(network: network)
+					.padding([.bottom], 160)
 			}
 			else {
 				Text(text_error)

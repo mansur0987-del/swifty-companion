@@ -13,29 +13,31 @@ struct search_user: View {
 	@State var showDetailView = false
 	@State var userName : String = ""
 	@State var user : User?
-	@State private var selectedStructId: Int = 0
+	@State var selectedStructId: Int = 0
 	@State var cursus : [Cursus] = []
 	@State var selectedSkillsProjectId : Int = 0
 	@State var typeViewData: [TypeViewData] = [
 		TypeViewData(id: 0, name: "Skills"),
 		TypeViewData(id: 1, name: "Projects")
 	]
-	
-	
 	var body: some View {
+		
 		VStack{
+			
 			Image("42_logo")
-				.padding([.top], 10)
+				.padding([.top], 1)
 				.frame(maxHeight: 200, alignment: .top)
+			
 			TextField ("User name", text: $userName)
 				.font(.system(size: 20, weight: .semibold, design: .rounded))
 				.padding()
 				.background(.tertiary)
-				.frame(width: 300, alignment: .center)
+				.frame(width: 300, alignment: .top)
 				.cornerRadius(40)
+			
 			Button  {
 				Task {
-					self.user = nil
+					user = nil
 					text_error = ""
 					
 					if userName == "" {
@@ -43,12 +45,12 @@ struct search_user: View {
 					}
 					else {
 						do {
-							self.cursus = []
-							self.user = try await network.GetUserData(user_login: userName)
-							self.user?.cursus_users.forEach { Element in
-								self.cursus.append(Cursus(id: Element.cursus.id, name: Element.cursus.name))
+							cursus = []
+							user = try await network.GetUserData(user_login: userName)
+							user?.cursus_users.forEach { Element in
+								cursus.append(Cursus(id: Element.cursus.id, name: Element.cursus.name))
 							}
-							self.selectedStructId = self.cursus.first?.id ?? 0
+							selectedStructId = cursus.first?.id ?? 0
 						}
 						catch NetworkError.invalidResponse(code_error: 404) {
 							text_error = "Couldn't Find Account"
@@ -58,7 +60,7 @@ struct search_user: View {
 						}
 						userName = ""
 					}
-					showDetailView = text_error != "" ? true : self.user != nil ? true : false
+					showDetailView = text_error != "" ? true : user != nil ? true : false
 				}
 			} label: {
 				HStack {
@@ -79,22 +81,22 @@ struct search_user: View {
 		
 		.sheet(isPresented: $showDetailView) {
 			VStack {
-				if self.user?.login != nil{
+				if user?.login != nil{
 					HStack {
-						avatar(link: self.user?.image?.link)
-						main_data(	login: self.user!.login,
-									email: self.user!.email,
-									first_name: self.user!.first_name,
-									last_name: self.user!.last_name,
-									wallet: self.user!.wallet)
+						avatar(link: user?.image?.link)
+						main_data(	login: user!.login,
+									email: user!.email,
+									first_name: user!.first_name,
+									last_name: user!.last_name,
+									wallet: user!.wallet)
 					}
 					select_cursus(selectedStructId: $selectedStructId, cursus: cursus)
 					
-					@State var cursus_users: CursusUsers = self.user!.cursus_users.first(where: { Element in
+					@State var cursus_users: CursusUsers = user!.cursus_users.first(where: { Element in
 						Element.cursus.id == selectedStructId
 					})!
 					
-					@State var user_project: [UserProject] = self.user!.projects_users.filter({ Element in
+					@State var user_project: [UserProject] = user!.projects_users.filter({ Element in
 						Element.cursus_ids.contains(selectedStructId)
 					})
 					
@@ -133,7 +135,7 @@ struct search_user: View {
 }
 
 struct error_view : View {
-	@State var text_error : String
+	var text_error : String
 	var body: some View {
 		Text(self.text_error)
 			.padding()
