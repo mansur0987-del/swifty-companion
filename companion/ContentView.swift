@@ -8,12 +8,12 @@
 import SwiftUI
 
 struct ContentView: View {
-	@State var network = Network()
+	@StateObject var network = Network()
 	@State var text_error: String = ""
 	var body: some View {
 		VStack() {
 			if text_error == "" {
-				search_user(network: network)
+				search_user().environmentObject(network)
 					.padding([.bottom], 160)
 			}
 			else {

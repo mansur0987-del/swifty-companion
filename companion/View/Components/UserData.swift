@@ -65,7 +65,7 @@ struct select_cursus : View {
 }
 
 struct level_data : View {
-	@Binding var cursus_users : CursusUsers
+	var cursus_users : CursusUsers
 	var body: some View {
 		Text("Level: " + String(self.cursus_users.level))
 			.foregroundColor(.white)
@@ -95,7 +95,7 @@ struct select_skills_projects : View {
 }
 
 struct skills_data : View {
-	@Binding var cursus_users : CursusUsers
+	var cursus_users : CursusUsers
 	var body: some View {
 		List (self.cursus_users.skills, id: \.id) { skill in
 			HStack {
@@ -122,7 +122,7 @@ struct skills_data : View {
 }
 
 struct projects_data : View {
-	@Binding var user_project: [UserProject]
+	var user_project: [UserProject]
 	var body: some View {
 		List (self.user_project, id: \.id) { project in
 			HStack {

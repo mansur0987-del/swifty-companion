@@ -8,8 +8,8 @@
 import SwiftUI
 
 struct search_user: View {
-	@State var network : Network
-	@State var text_error: String = "Write login"
+	@EnvironmentObject var network : Network
+	@State private var text_error: String = "Write login"
 	@State var showDetailView = false
 	@State var userName : String = ""
 	@State var user : User?
@@ -92,33 +92,31 @@ struct search_user: View {
 					}
 					select_cursus(selectedStructId: $selectedStructId, cursus: cursus)
 					
-					@State var cursus_users: CursusUsers = user!.cursus_users.first(where: { Element in
+					var cursus_users: CursusUsers = user!.cursus_users.first(where: { Element in
 						Element.cursus.id == selectedStructId
 					})!
 					
-					@State var user_project: [UserProject] = user!.projects_users.filter({ Element in
+					var user_project: [UserProject] = user!.projects_users.filter({ Element in
 						Element.cursus_ids.contains(selectedStructId)
 					})
 					
-					level_data(cursus_users: $cursus_users)
+					level_data(cursus_users: cursus_users)
 					
 					select_skills_projects(selectedSkillsProjectId: $selectedSkillsProjectId, typeViewData: typeViewData)
 					
 					if typeViewData.first(where: { Element in
 						Element.id == selectedSkillsProjectId
 					})!.name == "Skills" {
-						skills_data(cursus_users: $cursus_users)
+						skills_data(cursus_users: cursus_users)
 					}
 					else if typeViewData.first(where: { Element in
 						Element.id == selectedSkillsProjectId
 					})!.name == "Projects" {
-						projects_data(user_project: $user_project)
+						projects_data(user_project: user_project)
 					}
-					
 				}
 				else {
-					error_view(text_error: text_error)
-
+					error_view(text_error: $text_error)
 				}
 			}
 			.frame(maxWidth: /*@START_MENU_TOKEN@*/.infinity/*@END_MENU_TOKEN@*/, minHeight: 0, maxHeight: .infinity)
@@ -135,9 +133,9 @@ struct search_user: View {
 }
 
 struct error_view : View {
-	var text_error : String
+	@Binding var text_error : String
 	var body: some View {
-		Text(self.text_error)
+		Text(text_error)
 			.padding()
 			.foregroundColor(.white)
 	}

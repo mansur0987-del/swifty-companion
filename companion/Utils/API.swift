@@ -36,7 +36,7 @@ enum NetworkError: Error {
 	case invalidUrl
 }
 
-class Network {
+class Network : ObservableObject {
 	var env_data : EnvDict = env_dict
 	var token = Token()
 	
