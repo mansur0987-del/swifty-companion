@@ -92,11 +92,11 @@ struct search_user: View {
 					}
 					select_cursus(selectedStructId: $selectedStructId, cursus: cursus)
 					
-					var cursus_users: CursusUsers = user!.cursus_users.first(where: { Element in
+					let cursus_users: CursusUsers = user!.cursus_users.first(where: { Element in
 						Element.cursus.id == selectedStructId
 					})!
 					
-					var user_project: [UserProject] = user!.projects_users.filter({ Element in
+					let user_project: [UserProject] = user!.projects_users.filter({ Element in
 						Element.cursus_ids.contains(selectedStructId)
 					})
 					
