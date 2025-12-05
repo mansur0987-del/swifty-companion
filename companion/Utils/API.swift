@@ -84,7 +84,7 @@ class Network : ObservableObject {
 		guard (response as? HTTPURLResponse)?.statusCode == 200
 		else { throw NetworkError.invalidResponse(code_error: (response as? HTTPURLResponse)?.statusCode ?? 500)}
 		if let users = try? JSONDecoder().decode(User.self, from: data) {
-			return users
+            return users
 		}
 		throw NetworkError.serverError
 	}

@@ -94,7 +94,7 @@ struct search_user: View {
 					
 					let cursus_users: CursusUsers = user!.cursus_users.first(where: { Element in
 						Element.cursus.id == selectedStructId
-					})!
+                    }) ?? CursusUsers()
 					
 					let user_project: [UserProject] = user!.projects_users.filter({ Element in
 						Element.cursus_ids.contains(selectedStructId)

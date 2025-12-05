@@ -13,7 +13,6 @@
 		603DBC6D2D4631C9005EED6B /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 603DBC6C2D4631C9005EED6B /* ContentView.swift */; };
 		603DBC6F2D4631CF005EED6B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 603DBC6E2D4631CF005EED6B /* Assets.xcassets */; };
 		603DBC722D4631CF005EED6B /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 603DBC712D4631CF005EED6B /* Preview Assets.xcassets */; };
-		60489BFE2D4957240032E425 /* Config.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 60489BFA2D483D710032E425 /* Config.xcconfig */; };
 		60A6548D2D4D06700025A611 /* Interfaces.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60A6548C2D4D06700025A611 /* Interfaces.swift */; };
 		60FD6B212D4C038B0061C7F3 /* Search.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60FD6B202D4C038B0061C7F3 /* Search.swift */; };
 /* End PBXBuildFile section */
@@ -148,7 +147,7 @@
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
 				LastSwiftUpdateCheck = 1540;
-				LastUpgradeCheck = 1540;
+				LastUpgradeCheck = 1640;
 				TargetAttributes = {
 					603DBC662D4631C9005EED6B = {
 						CreatedOnToolsVersion = 15.4;
@@ -178,7 +177,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				60489BFE2D4957240032E425 /* Config.xcconfig in Resources */,
 				603DBC722D4631CF005EED6B /* Preview Assets.xcassets in Resources */,
 				603DBC6F2D4631CF005EED6B /* Assets.xcassets in Resources */,
 			);

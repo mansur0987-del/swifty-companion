@@ -76,11 +76,20 @@ struct CursusUsers: Decodable {
 	var has_coalition: Bool
 	var skills: [Skill]
 	var cursus: Cursus
+    
+    init(){
+        self.id = 0
+        self.cursus_id = 0
+        self.level = 0
+        self.has_coalition = false
+        self.skills = []
+        self.cursus = Cursus(id: 0, name: "")
+    }
 }
 
 struct Cursus: Decodable {
-	var id: Int
-	var name: String
+	var id: Int = 0
+	var name: String = ""
 	
 	init(id: Int, name: String) {
 		self.id = id
@@ -89,9 +98,9 @@ struct Cursus: Decodable {
 }
 
 struct Skill: Decodable {
-	var id: Int
-	var name: String
-	var level: Double
+	var id: Int = 0
+	var name: String = ""
+	var level: Double = 0
 }
 
 struct UserProject: Decodable {
